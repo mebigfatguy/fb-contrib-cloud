@@ -1,15 +1,9 @@
 package com.mebigfatguy.fbcontribcloud;
 
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.mongodb.Mongo;
 
@@ -18,15 +12,11 @@ import edu.umd.cs.findbugs.BugDesignation;
 import edu.umd.cs.findbugs.BugInstance;
 import edu.umd.cs.findbugs.cloud.AbstractCloud;
 import edu.umd.cs.findbugs.cloud.CloudPlugin;
-import edu.umd.cs.findbugs.cloud.Cloud.SigninState;
 
 public class FBContribCloud extends AbstractCloud {
 
-	private static final String MONGO_HOST_PROP = "com.mebigfatguy.fb-contribcloud.host";
-	private static final String MONGO_PORT_PROP = "com.mebigfatguy.fb-contribcloud.port";
-	private static final String MONGO_JAR_NAME = "mongo-2.4.jar";
-	
-	private static final Pattern JAR_URL_PATTERN = Pattern.compile("jar:file:(.*)!.*");
+	private static final String MONGO_HOST_PROP = "com.mebigfatguy.fb-contrib-cloud.host";
+	private static final String MONGO_PORT_PROP = "com.mebigfatguy.fb-contrib-cloud.port";
 	
 	private Mongo m_db;
 	private SigninState m_signinState = SigninState.SIGNED_OUT;
