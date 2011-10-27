@@ -18,8 +18,8 @@ public class FBContribCloud extends AbstractCloud {
 	private static final String MONGO_HOST_PROP = "com.mebigfatguy.fb-contrib-cloud.host";
 	private static final String MONGO_PORT_PROP = "com.mebigfatguy.fb-contrib-cloud.port";
 	
-	private Mongo m_db;
-	private SigninState m_signinState = SigninState.SIGNED_OUT;
+	private Mongo db;
+	private SigninState signinState = SigninState.SIGNED_OUT;
 	
 	public FBContribCloud(CloudPlugin cloudPlugin, BugCollection bugs, Properties properties)
 	{
@@ -34,11 +34,11 @@ public class FBContribCloud extends AbstractCloud {
 	@Override
 	public boolean availableForInitialization() {
 		try {
-		    if (m_db != null) {
+		    if (db != null) {
     			String host = System.getProperty(MONGO_HOST_PROP, "localhost");
     			String port = System.getProperty(MONGO_PORT_PROP, "27017");
     			
-    			m_db = new Mongo(host, Integer.parseInt(port));
+    			db = new Mongo(host, Integer.parseInt(port));
 		    }
 			
 			return true;
@@ -79,17 +79,17 @@ public class FBContribCloud extends AbstractCloud {
 
 	@Override
 	public void signIn() throws IOException {
-	    m_signinState = SigninState.SIGNED_IN;
+	    signinState = SigninState.SIGNED_IN;
 	}
 
 	@Override
 	public void signOut() {
-	       m_signinState = SigninState.SIGNED_OUT;
+	       signinState = SigninState.SIGNED_OUT;
 	}
 	
 	@Override
 	public SigninState getSigninState() {
-        return m_signinState;
+        return signinState;
     }
 
 	@Override
