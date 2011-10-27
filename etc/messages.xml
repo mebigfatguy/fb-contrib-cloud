@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MessageCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="messagecollection.xsd">
+
+	<Plugin>
+		<ShortDescription>fb-cloud plugin</ShortDescription>
+		<Details>
+			<![CDATA[
+			<p>
+			This plugin contains a FindBugs cloud from the fb-cloud project
+			</p>
+			]]>
+	    </Details>
+	</Plugin>
+	
+	<Cloud id="1">
+		<Description>The fb-cloud</Description>
+		<Details>The fb-cloud</Details>
+	</Cloud>
+
+</MessageCollection>

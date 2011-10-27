@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Plugin descriptor for fb-cloud plugin. This plugin is enabled by default. -->
+<FindbugsPlugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="findbugsplugin.xsd" pluginid="com.mebigfatguy.fbcontribcloud" defaultenabled="true"
+	provider="fb-contribcloud project" website="http://fb-cloud.sourceforge.net">
+
+	<Cloud id="1" cloudClass="com.mebigfatguy.fbcontribcloud.FBContribCloud" usernameClass="com.mebigfatguy.fbcontribcloud.FBUserName">
+	</Cloud>
+</FindbugsPlugin>
