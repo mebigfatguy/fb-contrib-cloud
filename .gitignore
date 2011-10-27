@@ -2,4 +2,5 @@
 .hgignore
 classes
 lib
-
+*.jar
+*.zip

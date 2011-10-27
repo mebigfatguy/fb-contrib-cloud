@@ -7,6 +7,7 @@
 
     <property file="build.properties"/>
 
+	<property environment="env"/>
     <property name="src.dir" value="${basedir}/src"/>
     <property name="classes.dir" value="${basedir}/classes"/>
     <property name="lib.dir" value="${basedir}/lib"/>
@@ -17,6 +18,15 @@
     <property name="javac.deprecation" value="on"/>
     <property name="javac.debug" value="on"/>
 
+	<property name="jsr305.version" value="1.3.7"/>
+	<property name="mongo.version" value="2.6.5"/>
+	<property name="findbugs.version" value="2.0.0"/>
+	
+    <property name="jsr305_url" value="http://repo1.maven.org/maven2/net/sourceforge/findbugs/jsr305/${jsr305.version}/jsr305-${jsr305.version}.jar"/> 
+    <property name="mongo_url" value="http://repo1.maven.org/maven2/org/mongodb/mongo-java-driver/${mongo.version}/mongo-java-driver-${mongo.version}.jar"/>
+	<property name="findbugs_url" value="http://repo1.maven.org/maven2/com/google/code/findbugs/findbugs/${findbugs.version}/findbugs-${findbugs.version}.jar"/>
+	
+	
     <property name="fb-contrib-cloud.version" value="0.0.1"/>
 
     <target name="clean" description="removes all generated collateral">
@@ -26,17 +36,49 @@
         <delete file="${basedir}/fb-contrib-cloud-src-${fb-contrib-cloud.version}.zip"/>
     </target>
 
+    <path id="fb-contrib-cloud.classpath">
+        <pathelement location="${lib.dir}/findbugs-${findbugs.version}.jar"/>
+        <pathelement location="${lib.dir}/jsr305-${jsr305.version}.jar"/>
+        <pathelement location="${lib.dir}/mongo-${mongo.version}.jar"/>
+    </path>
+	
     <target name="-init" description="prepares repository for a build">
         <mkdir dir="${classes.dir}"/>
         <mkdir dir="${javadoc.dir}"/>
-        <path id="fb-contrib-cloud.classpath">
-            <pathelement location="${lib.dir}/findbugs.jar"/>
-            <pathelement location="${lib.dir}/annotations.jar"/>
-            <pathelement location="${lib.dir}/mongo.jar"/>
-        </path>
+    	<mkdir dir="${lib.dir}"/>
     </target>
 	
-    <target name="compile" depends="-init" description="compiles java files">
+    <target name="jsr305_check">
+        <available file="${basedir}/lib/jsr305-${jsr305.version}.jar" property="jsr305_exists"/>
+    </target>
+	
+    <target name="mongo_check">
+        <available file="${basedir}/lib/mongo-${mongo.version}.jar" property="mongo_exists"/>
+    </target>
+	
+    <target name="findbugs_check">
+        <available file="${basedir}/lib/findbugs-${findbugs.version}.jar" property="findbugs_exists"/>
+    </target>
+
+    <target name="install_jsr305" depends="jsr305_check" unless="jsr305_exists" description="installs jsr305.jar into lib">
+        <get src="${jsr305_url}" dest="${basedir}/lib/jsr305-${jsr305.version}.jar" verbose="true" ignoreerrors="true"/>
+    </target>
+        	
+    <target name="install_mongo" depends="mongo_check" unless="mongo_exists" description="installs mongo.jar into lib">
+        <get src="${mongo_url}" dest="${basedir}/lib/mongo-${mongo.version}.jar" verbose="true" ignoreerrors="true"/>
+    </target>
+        	
+    <target name="install_findbugs" depends="findbugs_check" unless="findbugs_exists" description="installs findbugs.jar into lib">
+<!--    Version 2.0.0 isn't published yet, so pull from a local findbugs install
+        <get src="${findbugs_url}" dest="${basedir}/lib/findbugs-${findbugs.version}.jar" verbose="true" ignoreerrors="true"/>
+-->
+    	<copy file="${env.FINDBUGS_HOME}/lib/findbugs.jar" tofile="${basedir}/lib/findbugs-${findbugs.version}.jar"/>
+    </target>
+	
+	<target name="pull" depends="install_jsr305, install_mongo, install_findbugs" description="pull 3rdparty jars to the lib directory">
+	</target>
+	
+    <target name="compile" depends="-init, pull" description="compiles java files">
         <javac  srcdir="${src.dir}"
                 destdir="${classes.dir}"
                 source="${javac.source}"
@@ -60,7 +102,7 @@
             </fileset>
             <manifest>
                 <attribute name="fb-contrib-cloud-version" value="${fb-contrib-cloud.version}"/>
-                <attribute name="Class-Path" value="mongo.jar"/>
+                <attribute name="Class-Path" value="mongo-${mongo.version}.jar"/>
                 <attribute name="Eclipse-RegisterBuddy" value="edu.umd.cs.findbugs.plugin.eclipse"/>
                 <attribute name="Bundle-ManifestVersion" value="2"/>
                 <attribute name="Bundle-Name" value="fb-contrib-cloud plugin"/>
