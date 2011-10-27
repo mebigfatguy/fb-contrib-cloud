@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
 
+import javax.swing.JOptionPane;
+
 import com.mongodb.Mongo;
 
 import edu.umd.cs.findbugs.BugCollection;
@@ -20,6 +22,7 @@ public class FBContribCloud extends AbstractCloud {
 	
 	private Mongo db;
 	private SigninState signinState = SigninState.SIGNED_OUT;
+	private String userName;
 	
 	public FBContribCloud(CloudPlugin cloudPlugin, BugCollection bugs, Properties properties)
 	{
@@ -65,7 +68,7 @@ public class FBContribCloud extends AbstractCloud {
 
 	@Override
 	public String getUser() {
-		return System.getProperty("user.name");
+		return userName;
 	}
 
 	@Override
@@ -79,7 +82,9 @@ public class FBContribCloud extends AbstractCloud {
 
 	@Override
 	public void signIn() throws IOException {
-	    signinState = SigninState.SIGNED_IN;
+	    userName = JOptionPane.showInputDialog("UserName");
+	    if (!Strings.isEmpty(userName))
+	        signinState = SigninState.SIGNED_IN;
 	}
 
 	@Override
