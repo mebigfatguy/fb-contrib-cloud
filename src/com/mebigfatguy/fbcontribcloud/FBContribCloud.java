@@ -14,6 +14,7 @@ import edu.umd.cs.findbugs.BugDesignation;
 import edu.umd.cs.findbugs.BugInstance;
 import edu.umd.cs.findbugs.cloud.AbstractCloud;
 import edu.umd.cs.findbugs.cloud.CloudPlugin;
+import edu.umd.cs.findbugs.cloud.Cloud.Mode;
 
 public class FBContribCloud extends AbstractCloud {
 
@@ -37,7 +38,7 @@ public class FBContribCloud extends AbstractCloud {
 	@Override
 	public boolean availableForInitialization() {
 		try {
-		    if (db != null) {
+		    if (db == null) {
     			String host = System.getProperty(MONGO_HOST_PROP, "localhost");
     			String port = System.getProperty(MONGO_PORT_PROP, "27017");
     			
@@ -49,7 +50,7 @@ public class FBContribCloud extends AbstractCloud {
 			return false;
 		}
 	}
-
+    
 	@Override
 	public void waitUntilNewIssuesUploaded() {
 	}

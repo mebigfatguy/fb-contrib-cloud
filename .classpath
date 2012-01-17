@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="lib/findbugs-2.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/jsr305-2.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/mongo-2.7.2.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/fb-contrib"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
